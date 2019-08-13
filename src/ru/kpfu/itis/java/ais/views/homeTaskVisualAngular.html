@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="MyRoomApp">
+<head>
+    <meta charset="UTF-8">
+    <title>MyRoom</title>
+    <link href="../resources/css/room.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../resources/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="../resources/css/bootstrap-theme.css"/>
+</head>
+
+<body ng-controller="MyRoomCtrl" ng-mousemove="move()">
+<div class="container">
+    <div class="page-header">
+        <h1>
+            <b>Планировщик комнаты.</b>
+        </h1>
+        <h3>
+            Комната спальная: 310х420. Количество мебели - {{data.furniture.length}}
+        </h3>
+    </div>
+    <h4>
+        <b>Добавить мебель: </b>
+    </h4>
+
+    <div class="page-header">
+        <div class="input-group">
+            <div class="form-horizontal">
+                <div class="form-inline">
+                    <b>Название: </b>
+                    <div class="form-group">
+                        <div class="col-xs-10">
+                            <label>
+                                <input class="form-control" ng-model="itemName" placeholder="стол"/>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <b>Длина: </b>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <label>
+                                <input class="form-control" ng-model="itemHeight" placeholder="100"/>
+                            </label>
+                        </div>
+                    </div>
+
+                    <b>Ширина: </b>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <label>
+                                <input class="form-control" ng-model="itemWidth" placeholder="120"/>
+                            </label>
+                        </div>
+                    </div>
+
+                    <b>Цвет: </b>
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <label>
+                                <input class="form-control" ng-model="itemColor" placeholder="red or #FF0000"/>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn-default" ng-click="addNewFurniture();">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="page-header">
+        <div class="row debug_message">
+            <div class="h4">Координаты мыши: X = {{getPageX()}}; Y = {{getPageY()}}</div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <h3>
+            <b>Все вещи в комнате:</b>
+        </h3>
+
+        <div class="col-sm-7">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Имя</th>
+                    <th>Координаты</th>
+                    <th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Ширина * Высота</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.furniture">
+                    <td>{{$index + 1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>x={{item.coordX}}<br/>y={{item.coordY}}</td>
+                    <td>
+                        <div class="col-xs-5">
+                            <label>
+                                <input class="form-control" ng-model="item.width" placeholder="{{item.height}}"/>
+                            </label>
+                        </div>
+                        <div class="col-xs-5">
+                            <label>
+                                <input class="form-control" ng-model="item.height" placeholder="{{item.width}}"/>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="changeItem(item);">повернуть</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="deleteItem($index);">удалить</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="main_field" style="{{fieldStyle()}}">
+        <div ng-repeat="item in data.furniture" class="thing_css" style="{{itemStyle(item)}}"
+             ng-mousedown="holdObject(item)" ng-mouseup="free()" ng-mousemove="move()">
+            {{item.name}}
+        </div>
+    </div>
+</div>
+
+<script src="../resources/js/angular.js"></script>
+<script src="../resources/js/mouseCoords.js" defer></script>
+<script src="../resources/js/createRoom.js" defer></script>
+
+</body>
+</html>
